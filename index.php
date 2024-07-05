@@ -1,6 +1,6 @@
 <?php include "./header.php" ?>
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel">
+<div id="myCarousel" class="carousel slide" data-ride="carousel" style="padding: 0;">
     <!-- Indicators -->
     <ol class="carousel-indicators">
         <?php
@@ -9,9 +9,9 @@
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         foreach ($result as $row) {
-            ?>
+        ?>
             <li data-target="#myCarousel" data-slide-to="<?php echo $i; ?>" <?php if ($i == 0) echo 'class="active"'; ?>></li>&nbsp;
-            <?php
+        <?php
             $i++;
         }
         ?>
@@ -22,7 +22,7 @@
         <?php
         $i = 0;
         foreach ($result as $row) {
-            ?>
+        ?>
             <div class="item <?php if ($i == 0) echo 'active'; ?>">
                 <img src="./admin/uploads/<?php echo $row['photo']; ?>" width="100%" alt="Slide <?php echo $i + 1; ?>" />
                 <div class="slider_img">
@@ -33,7 +33,7 @@
                     </div>
                 </div>
             </div>
-            <?php
+        <?php
             $i++;
         }
         ?>
@@ -47,6 +47,72 @@
         <span class="glyphicon glyphicon-chevron-right"></span>
     </a>
 </div>
+<?php
+// Fetch mid categories
+$statement = $pdo->prepare("SELECT * FROM tbl_mid_category WHERE tcat_id = 9");
+$statement->execute();
+$mid_categories = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch end categories
+$statement = $pdo->prepare("SELECT * FROM tbl_end_category");
+$statement->execute();
+$end_categories = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch last categories
+$statement = $pdo->prepare("SELECT * FROM tbl_last_category");
+$statement->execute();
+$last_categories = $statement->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<div class="software_section">
+<div class="tabs">
+        <?php foreach ($mid_categories as $mid_category): ?>
+            <div class="tab" data-tab="<?php echo $mid_category['mcat_id']; ?>">
+                <img src="./admin/uploads/mid_category/<?php echo $mid_category['mcat_img']; ?>" alt="" srcset="">
+                <p class="contentTab">
+                    <?php echo $mid_category['mcat_name']; ?>
+                </p>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
+    <?php foreach ($mid_categories as $mid_category) : ?>
+    <div id="tab-<?php echo $mid_category['mcat_id']; ?>" class="slider-container <?php echo $mid_category['mcat_id'] == 7 ? 'active' : ''; ?>">
+        <div class="slick-slider">
+            <?php
+            // Filter end categories for current mid category
+            $filtered_end_categories = array_filter($end_categories, function($end_category) use ($mid_category) {
+                return $end_category['mcat_id'] == $mid_category['mcat_id'];
+            });
+
+            foreach ($filtered_end_categories as $end_category) :
+                ?>
+                <div class="card">
+                    <a href="end_category.php?ecat_id=<?php echo $end_category['ecat_id']; ?>">
+                        <img src="./admin/uploads/end_category/<?php echo $end_category['ecat_img']; ?>" alt="<?php echo $end_category['ecat_name']; ?>" style="height: 150px; width: 100%;">
+                        <div class="card-content">
+                            <h3><?php echo $end_category['ecat_name']; ?></h3>
+                            <?php
+                            // Filter last categories for current end category
+                            $filtered_last_categories = array_filter($last_categories, function($last_category) use ($end_category) {
+                                return $last_category['ecat_id'] == $end_category['ecat_id'];
+                            });
+
+                            foreach ($filtered_last_categories as $last_category) :
+                                ?>
+                                <a href="last_category.php?lecat_id=<?php echo $last_category['lecat_id']; ?>">
+                                    <p style="margin-top: 10px;"><?php echo $last_category['lecat_name']; ?></p>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    </a>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+<?php endforeach; ?>
+
+</div>
 
 <div class="software_section">
     <h3 style="text-align: center;">PicOS® Software Platform</h3>
@@ -56,7 +122,7 @@
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         foreach ($result as $row) {
-            ?>
+        ?>
             <a href="<?php echo $row['url']; ?>" class="card">
                 <div class="image-container">
                     <img src="./admin/uploads/<?php echo $row['image']; ?>" alt="Server Room">
@@ -69,7 +135,7 @@
                     <p><?php echo $row['soft_content']; ?></p>
                 </div>
             </a>
-            <?php
+        <?php
         }
         ?>
     </div>
@@ -82,7 +148,7 @@
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         foreach ($result as $row) {
-            ?>
+        ?>
             <a href="<?php echo $row['url']; ?>" class="card">
                 <div class="image-container">
                     <img src="./admin/uploads/<?php echo $row['image']; ?>" alt="Feature Solution">
@@ -90,10 +156,10 @@
                 <div class="card-content">
                     <h3><?php echo $row['feat_type']; ?></h3>
                     <p><?php echo $row['feat_content']; ?></p>
-                    
+
                 </div>
             </a>
-            <?php
+        <?php
         }
         ?>
     </div>
@@ -107,7 +173,7 @@
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         foreach ($result as $row) {
-            ?>
+        ?>
             <a href="<?php echo $row['url']; ?>" class="card cardCerificate">
                 <div class="icon">
                     <?php echo $row['cert_icon']; ?>
@@ -115,7 +181,7 @@
                 <h2><?php echo $row['cert_name']; ?></h2>
                 <p><?php echo $row['cert_content']; ?></p>
             </a>
-            <?php
+        <?php
         }
         ?>
     </div>
@@ -125,51 +191,39 @@
 <div class="software_section">
     <h3 style="text-align: center;">Case Studies</h3>
     <div class="slick-slider3">
-        <div class="card">
-            <img src="./image/card.jpg" alt="Autonomous vehicle interior view" class="card-image">
-            <div class="card-content">
-                <div class="country">
-                    <img src="./image/india.svg" alt="US flag" class="flag-icon">
-                    <span>United States</span>
+        <?php
+        $statement = $pdo->prepare("SELECT * FROM tbl_case_studies");
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($result as $row) {
+        ?>
+            <a href="<?php echo $row['url']; ?>" class="card">
+                <img src="./admin/<?php echo $row['study_img']; ?>" alt="<?php echo $row['study_heading']; ?>" class="card-image">
+                <div class="card-content">
+                    <div class="country">
+                        <img src="./admin/<?php echo $row['country_flag']; ?>" alt="<?php echo $row['country_name']; ?> flag" class="flag-icon">
+                        <span><?php echo $row['country_name']; ?></span>
+                    </div>
+                    <h2><?php echo $row['study_heading']; ?></h2>
+                    <div class="tags">
+                        <?php
+                        $tags = explode(',', $row['study_content']);
+                        foreach ($tags as $tag) {
+                        ?>
+                            <span class="tag"><?php echo trim($tag); ?> |</span>
+                        <?php
+                        }
+                        ?>
+                    </div>
                 </div>
-                <h2>FS Helps an Autonomous Vehicle Startup to Build a Data Center Network</h2>
-                <div class="tags">
-                    <span class="tag">Autonomous Driving |</span> 
-                    <span class="tag">HPC Network</span>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <img src="./image/card.jpg" alt="Autonomous vehicle interior view" class="card-image">
-            <div class="card-content">
-                <div class="country">
-                    <img src="./image/usa.svg" alt="US flag" class="flag-icon">
-                    <span>United States</span>
-                </div>
-                <h2>FS Helps an Autonomous Vehicle Startup to Build a Data Center Network</h2>
-                <div class="tags">
-                    <span class="tag">Autonomous Driving |</span>
-                    <span class="tag">HPC Network</span>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <img src="./image/card.jpg" alt="Autonomous vehicle interior view" class="card-image">
-            <div class="card-content">
-                <div class="country">
-                    <img src="./image/germany.svg" alt="US flag" class="flag-icon">
-                    <span>United States</span>
-                </div>
-                <h2>FS Helps an Autonomous Vehicle Startup to Build a Data Center Network</h2>
-                <div class="tags">
-                    <span class="tag">Autonomous Driving |</span>
-                    <span class="tag">HPC Network</span>
-                </div>
-            </div>
-        </div>
-        <!-- Repeat for all cards -->
+            </a>
+        <?php
+        }
+        ?>
     </div>
-    <!-- FS Certified section   -->
+
+</div>
+
 </div>
 
 <div class="fullwidth">

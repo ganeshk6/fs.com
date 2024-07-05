@@ -42,24 +42,29 @@
 														t1.p_featured_photo,
 														t1.p_is_featured,
 														t1.p_is_active,
-														t1.ecat_id,
+														t1.lecat_id,
 
-														t2.ecat_id,
-														t2.ecat_name,
+														t2.lecat_id,
+														t2.lecat_name,
 
-														t3.mcat_id,
-														t3.mcat_name,
+														t3.ecat_id,
+														t3.ecat_name,
 
-														t4.tcat_id,
-														t4.tcat_name
+														t4.mcat_id,
+														t4.mcat_name,
+
+														t5.tcat_id,
+														t5.tcat_name
 
 							                           	FROM tbl_product t1
-							                           	JOIN tbl_end_category t2
-							                           	ON t1.ecat_id = t2.ecat_id
-							                           	JOIN tbl_mid_category t3
-							                           	ON t2.mcat_id = t3.mcat_id
-							                           	JOIN tbl_top_category t4
-							                           	ON t3.tcat_id = t4.tcat_id
+							                           	JOIN tbl_last_category t2
+							                           	ON t1.lecat_id = t2.lecat_id
+							                           	JOIN tbl_end_category t3
+							                           	ON t2.ecat_id = t3.ecat_id
+							                           	JOIN tbl_mid_category t4
+							                           	ON t3.mcat_id = t4.mcat_id
+							                           	JOIN tbl_top_category t5
+							                           	ON t4.tcat_id = t5.tcat_id
 							                           	ORDER BY t1.p_id DESC
 							                           	");
 							$statement->execute();
@@ -80,7 +85,7 @@
 									<td>
 										<?php if($row['p_is_active'] == 1) {echo '<span class="badge badge-success" style="background-color:green;">Yes</span>';} else {echo '<span class="badge badge-danger" style="background-color:red;">No</span>';} ?>
 									</td>
-									<td><?php echo $row['tcat_name']; ?><br><?php echo $row['mcat_name']; ?><br><?php echo $row['ecat_name']; ?></td>
+									<td><?php echo $row['tcat_name']; ?><br><?php echo $row['mcat_name']; ?><br><?php echo $row['ecat_name']; ?><br><?php echo $row['lecat_name']; ?></td>
 									<td>										
 										<a href="product-edit.php?id=<?php echo $row['p_id']; ?>" class="btn btn-primary btn-xs">Edit</a>
 										<a href="#" class="btn btn-danger btn-xs" data-href="product-delete.php?id=<?php echo $row['p_id']; ?>" data-toggle="modal" data-target="#confirm-delete">Delete</a>  

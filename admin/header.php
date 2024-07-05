@@ -163,6 +163,11 @@ if(!isset($_SESSION['user'])) {
 			            <i class="fa fa-laptop"></i> <span>Manage FS Certified</span>
 			          </a>
 			        </li>
+                     <li class="treeview <?php if( ($cur_page == 'case_studies.php') ) {echo 'active';} ?>">
+			          <a href="case_studies.php">
+			            <i class="fa fa-laptop"></i> <span>Manage Case Studies</span>
+			          </a>
+			        </li>
                     <!-- Icons to be displayed on Shop -->
 			        <li class="treeview <?php if( ($cur_page == 'service.php') ) {echo 'active';} ?>">
 			          <a href="service.php">

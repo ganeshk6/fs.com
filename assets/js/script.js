@@ -109,3 +109,55 @@ $(document).ready(function(){
         ]
     });
 });
+
+
+$(document).ready(function(){
+    $('.slick-sliders').slick({
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2000,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                    infinite: true,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
+    });
+
+    $('.tab').on('mouseover', function() {
+        var tabId = $(this).data('tab');
+        $('.tab').removeClass('active');
+        $(this).addClass('active');
+        $('.slider-container').removeClass('active');
+        $('#tab-' + tabId).addClass('active');
+        $('.slick-slider').slick('setPosition'); // To fix the slider width issue when changing tabs
+    });
+});
+
+document.querySelectorAll('.btn-primary').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Add to cart functionality here
+        alert('Product added to cart!');
+    });
+});

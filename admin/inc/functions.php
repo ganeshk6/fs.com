@@ -50,3 +50,10 @@ function get_ai_id($pdo,$tbl_name)
 	}
 	return $next_id;
 }
+function generateSlug($string) {
+    $slug = strtolower($string);
+    $slug = preg_replace('/[^a-z0-9-]+/', '-', $slug);
+    $slug = preg_replace('/-+/', '-', $slug);
+    $slug = trim($slug, '-');
+    return $slug;
+}

@@ -27,6 +27,7 @@
 			        <th>End Level Category Name</th>
                     <th>Mid Level Category Name</th>
                     <th>Top Level Category Name</th>
+                    <th>Mid Level Category Description</th>
 			        <th>Action</th>
 			    </tr>
 			</thead>
@@ -56,6 +57,7 @@
 	                    <td><?php echo $row['ecat_name']; ?></td>
                         <td><?php echo $row['mcat_name']; ?></td>
                         <td><?php echo $row['tcat_name']; ?></td>
+                        <td><?php echo $row['ecat_desc']; ?></td>
 	                    <td>
 	                        <a href="end-category-edit.php?id=<?php echo $row['ecat_id']; ?>" class="btn btn-primary btn-xs">Edit</a>
 	                        <a href="#" class="btn btn-danger btn-xs" data-href="end-category-delete.php?id=<?php echo $row['ecat_id']; ?>" data-toggle="modal" data-target="#confirm-delete">Delete</a>

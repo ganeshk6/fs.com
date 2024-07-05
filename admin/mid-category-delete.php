@@ -1,18 +1,25 @@
 <?php require_once('header.php'); ?>
 
 <?php
-// Preventing the direct access of this page.
+// Preventing direct access of this page.
 if (!isset($_REQUEST['id'])) {
     header('location: logout.php');
     exit;
 } else {
-    // Check the id is valid or not
+    // Check if the id is valid
     $statement = $pdo->prepare("SELECT * FROM tbl_mid_category WHERE mcat_id=?");
     $statement->execute(array($_REQUEST['id']));
     $total = $statement->rowCount();
     if ($total == 0) {
         header('location: logout.php');
         exit;
+    } else {
+        // Get the image file name
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        $mcat_img = $result['mcat_img'];
+        if ($mcat_img != '') {
+            unlink('uploads/mid_category/' . $mcat_img);
+        }
     }
 }
 ?>
